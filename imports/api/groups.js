@@ -44,7 +44,4 @@ const findGroupByName = async function (groupName) {
 Meteor.methods({
   'groups.insert': insertGroup,
   'groups.findByName': findGroupByName
-  // 'groups.getTasksByGroupName': async function (groupName) {
-  //   console.log('filterByGroup called', groupName)
-  // }
 })

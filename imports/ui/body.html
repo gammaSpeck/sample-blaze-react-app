@@ -1,4 +1,6 @@
 <body>
+  <div>{{> React component=ToastJSX }}</div>
+
   <div class="container">
     <header>
       <h1>Todo List ({{incompleteCount}})</h1>
@@ -13,20 +15,23 @@
       <form class="new-task">
         <input type="text" name="text" placeholder="Type to add new tasks" />
         <input type="text" name="groupName" placeholder="Type to add group" />
-        <button>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       {{/if}}
     </header>
 
     {{#if currentUser}}
     <div class="groups">
-      <button class="Group group-all">ALL</button>
+      <div>
+        {{> React component=GroupJSX group=groupAll setFilterByGroup=setFilterByGroup
+        filterByGroupId=filterByGroupId }}
+      </div>
+
       {{#each groups}}
       <div>
         {{> React component=GroupJSX group=this setFilterByGroup=setFilterByGroup
         filterByGroupId=filterByGroupId }}
       </div>
-
       {{/each}}
     </div>
     {{/if}}

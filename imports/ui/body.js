@@ -6,10 +6,11 @@ import { Tasks } from '../api/tasks.js'
 import { Groups } from '../api/groups.js'
 
 import GroupJSX from './react/components/Group'
+import ToastJSX from './react/components/Toast'
 
 import './task.js'
-import './group.js'
 import './body.html'
+import { toast } from 'react-toastify'
 
 // On body element mount, initialize a state
 Template.body.onCreated(function bodyOnCreated() {
@@ -48,8 +49,16 @@ Template.body.helpers({
     return Groups.find({})
   },
 
+  groupAll() {
+    return { _id: '*', name: 'All' }
+  },
+
   GroupJSX() {
     return GroupJSX
+  },
+
+  ToastJSX() {
+    return ToastJSX
   },
 
   setFilterByGroup() {
@@ -72,6 +81,8 @@ const onNewTaskSubmit = (event) => {
   const { value: text } = target.text
   const { value: groupName } = target.groupName
 
+  if (!text || !groupName) return toast.error('Task and group is required')
+
   // Insert a task into the collection
   Meteor.call('tasks.insert', { text, groupName })
 
@@ -87,10 +98,5 @@ const onHideCompletedCheckboxToggled = (event, instance) => {
 // Register event listeners
 Template.body.events({
   'submit .new-task': onNewTaskSubmit,
-  'change .hide-completed input': onHideCompletedCheckboxToggled,
-
-  'click .group-all'(event, instance) {
-    console.log('ALL CLICKED')
-    instance.state.set('filterByGroup', '*')
-  }
+  'change .hide-completed input': onHideCompletedCheckboxToggled
 })

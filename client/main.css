@@ -87,16 +87,16 @@ form {
 }
 
 .Group {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
-  background-color: lightgreen;
+  background-color: lightcoral;
   margin: auto 5px;
 }
 .Group:focus {
   outline: none;
 }
 .Group.selected {
-  background-color: green;
+  background-color: lightseagreen;
 }
 
 ul {
