@@ -1,13 +1,16 @@
 import React from 'react'
 
-const GroupJSX = ({ group }) => {
-  console.log('Attributes are:', group)
+const GroupJSX = ({ group, setFilterByGroup, filterByGroupId }) => {
+  console.log('Attributes are:', { group, setFilterByGroup, filterByGroupId })
 
-  const onClick = (e) => {
-    console.log(`${group.name} clicked`)
+  const onClick = (event) => {
+    setFilterByGroup(group._id)
   }
+
+  let className = `Group ${group._id === filterByGroupId ? 'selected' : ''}`
+
   return (
-    <button className='Group' onClick={onClick}>
+    <button className={className} onClick={onClick}>
       {group.name}
     </button>
   )

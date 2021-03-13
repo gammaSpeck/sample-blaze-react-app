@@ -5,6 +5,8 @@ import { ReactiveDict } from 'meteor/reactive-dict'
 import { Tasks } from '../api/tasks.js'
 import { Groups } from '../api/groups.js'
 
+import GroupJSX from './react/components/Group'
+
 import './task.js'
 import './group.js'
 import './body.html'
@@ -12,6 +14,7 @@ import './body.html'
 // On body element mount, initialize a state
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict()
+  this.state.set('filterByGroup', '*') // Default state
   Meteor.subscribe('tasks')
   Meteor.subscribe('groups')
 })
@@ -20,18 +23,42 @@ Template.body.onCreated(function bodyOnCreated() {
 Template.body.helpers({
   tasks() {
     const instance = Template.instance()
-    const filterCondition = instance.state.get('hideCompleted')
-      ? { checked: { $ne: true } }
-      : {}
+    const isCompletedHidden = instance.state.get('hideCompleted')
+    const groupId = instance.state.get('filterByGroup')
+
+    const filterCondition = {}
+    if (isCompletedHidden) filterCondition.checked = { $ne: true }
+    if (groupId !== '*') {
+      console.log('Must filter by group id', groupId)
+      filterCondition.groupId = { $eq: groupId }
+    }
 
     return Tasks.find(filterCondition, { sort: { createdAt: -1 } })
   },
+
+  filterByGroupId() {
+    return Template.instance().state.get('filterByGroup')
+  },
+
   incompleteCount() {
     return Tasks.find({ checked: { $ne: true } }).count()
   },
 
   groups() {
     return Groups.find({})
+  },
+
+  GroupJSX() {
+    return GroupJSX
+  },
+
+  setFilterByGroup() {
+    const instance = Template.instance()
+
+    return (groupId) => {
+      console.log('groupId passed', groupId)
+      instance.state.set('filterByGroup', groupId)
+    }
   }
 })
 
@@ -62,7 +89,8 @@ Template.body.events({
   'submit .new-task': onNewTaskSubmit,
   'change .hide-completed input': onHideCompletedCheckboxToggled,
 
-  'click .group-all'() {
+  'click .group-all'(event, instance) {
     console.log('ALL CLICKED')
+    instance.state.set('filterByGroup', '*')
   }
 })

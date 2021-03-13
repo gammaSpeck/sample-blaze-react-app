@@ -95,6 +95,9 @@ form {
 .Group:focus {
   outline: none;
 }
+.Group.selected {
+  background-color: green;
+}
 
 ul {
   margin: 0;

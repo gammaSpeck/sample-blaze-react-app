@@ -15,7 +15,6 @@ if (Meteor.isServer) {
 // Controllers
 const insertGroup = async function (groupName) {
   check(groupName, String)
-  console.log('Insert group called', groupName)
 
   if (!this.userId) throw new Meteor.Error('not-authorized')
 
@@ -28,17 +27,14 @@ const insertGroup = async function (groupName) {
     // owner: this.userId,
     // username: Meteor.users.findOne(this.userId).username
   })
-  console.log('result groupId', groupId)
 
   return groupId
 }
 
 const findGroupByName = async function (groupName) {
-  console.log('findGroupByName', groupName)
   const cursor = Groups.find({
     name: { $eq: groupName }
   })
-  console.log('Cursor', cursor)
   const allValues = []
   await cursor.forEach((doc) => allValues.push(doc))
   return allValues[0] ? allValues[0] : false
@@ -48,4 +44,7 @@ const findGroupByName = async function (groupName) {
 Meteor.methods({
   'groups.insert': insertGroup,
   'groups.findByName': findGroupByName
+  // 'groups.getTasksByGroupName': async function (groupName) {
+  //   console.log('filterByGroup called', groupName)
+  // }
 })

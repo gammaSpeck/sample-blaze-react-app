@@ -18,10 +18,18 @@
       {{/if}}
     </header>
 
+    {{#if currentUser}}
     <div class="groups">
       <button class="Group group-all">ALL</button>
-      {{#each groups}} {{> group}} {{/each}}
+      {{#each groups}}
+      <div>
+        {{> React component=GroupJSX group=this setFilterByGroup=setFilterByGroup
+        filterByGroupId=filterByGroupId }}
+      </div>
+
+      {{/each}}
     </div>
+    {{/if}}
 
     <ul>
       {{#each tasks}} {{> task}} {{/each}}
