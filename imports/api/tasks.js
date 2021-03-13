@@ -15,13 +15,16 @@ if (Meteor.isServer) {
 }
 
 // Controllers
-const insertTask = function (text) {
+const insertTask = function ({ text, groupName }) {
   check(text, String)
+  check(groupName, String)
+
   // Make sure the user is logged in before inserting a task
   if (!this.userId) throw new Meteor.Error('not-authorized')
   // if (!text.trim()) throw new Error('Todo needs content')
   Tasks.insert({
     text,
+    // group,
     createdAt: new Date(),
     owner: this.userId,
     username: Meteor.users.findOne(this.userId).username

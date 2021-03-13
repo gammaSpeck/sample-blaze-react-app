@@ -12,9 +12,13 @@
       {{#if currentUser}}
       <form class="new-task">
         <input type="text" name="text" placeholder="Type to add new tasks" />
+        <input type="text" name="groupName" placeholder="Type to add group" />
+        <button>Submit</button>
       </form>
       {{/if}}
     </header>
+
+    <div class="groups"></div>
 
     <ul>
       {{#each tasks}} {{> task}} {{/each}}

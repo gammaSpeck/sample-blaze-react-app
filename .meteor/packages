@@ -23,3 +23,5 @@ reactive-dict
 accounts-ui
 accounts-password
 meteortesting:mocha
+react-template-helper
+react-meteor-data

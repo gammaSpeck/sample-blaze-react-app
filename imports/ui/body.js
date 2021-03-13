@@ -33,15 +33,19 @@ const onNewTaskSubmit = (event) => {
   // Prevent default browser form submit
   event.preventDefault()
 
+  console.log('TARGET', event.target)
+
   // Get value from form element
   const { target } = event
   const { value: text } = target.text
+  const { value: groupName } = target.groupName
 
   // Insert a task into the collection
-  Meteor.call('tasks.insert', text)
+  Meteor.call('tasks.insert', { text, groupName })
 
   // Clear form
   target.text.value = ''
+  target.groupName.value = ''
 }
 
 const onHideCompletedCheckboxToggled = (event, instance) => {
