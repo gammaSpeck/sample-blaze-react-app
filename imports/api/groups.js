@@ -13,23 +13,39 @@ if (Meteor.isServer) {
 }
 
 // Controllers
-const insertGroup = function (groupName) {
+const insertGroup = async function (groupName) {
   check(groupName, String)
+  console.log('Insert group called', groupName)
 
-  const existing = Groups.find({
+  if (!this.userId) throw new Meteor.Error('not-authorized')
+
+  const existing = await findGroupByName(groupName)
+  if (existing._id) throw new Meteor.Error('duplicate-entry-group')
+
+  const groupId = await Groups.insert({
+    name: groupName,
+    createdAt: new Date()
+    // owner: this.userId,
+    // username: Meteor.users.findOne(this.userId).username
+  })
+  console.log('result groupId', groupId)
+
+  return groupId
+}
+
+const findGroupByName = async function (groupName) {
+  console.log('findGroupByName', groupName)
+  const cursor = Groups.find({
     name: { $eq: groupName }
   })
-  if (existing) throw new Meteor.Error('duplicate-entry-group')
-
-  Groups.insert({
-    name: groupName,
-    createdAt: new Date(),
-    owner: this.userId,
-    username: Meteor.users.findOne(this.userId).username
-  })
+  console.log('Cursor', cursor)
+  const allValues = []
+  await cursor.forEach((doc) => allValues.push(doc))
+  return allValues[0] ? allValues[0] : false
 }
 
 // Its like writing middlewares that overrides the default methods and/or adds new methods on mongo collection Groups
 Meteor.methods({
-  'groups.insert': insertGroup
+  'groups.insert': insertGroup,
+  'groups.findByName': findGroupByName
 })

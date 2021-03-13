@@ -15,16 +15,26 @@ if (Meteor.isServer) {
 }
 
 // Controllers
-const insertTask = function ({ text, groupName }) {
+const insertTask = async function ({ text, groupName }) {
   check(text, String)
   check(groupName, String)
 
-  // Make sure the user is logged in before inserting a task
   if (!this.userId) throw new Meteor.Error('not-authorized')
+
+  // console.log('{text, groupName}', text, groupName)
+  let { _id: groupId } = await Meteor.call('groups.findByName', groupName)
+
+  if (!groupId) {
+    groupId = await Meteor.call('groups.insert', groupName)
+  }
+
+  console.log('I WANT ONE', groupId)
+  // return
+  // Make sure the user is logged in before inserting a task
   // if (!text.trim()) throw new Error('Todo needs content')
   Tasks.insert({
     text,
-    // group,
+    groupId: groupId,
     createdAt: new Date(),
     owner: this.userId,
     username: Meteor.users.findOne(this.userId).username

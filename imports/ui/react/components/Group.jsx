@@ -1,8 +1,16 @@
 import React from 'react'
 
-const Group = (props) => {
-  console.log('My props are', props)
-  return <div>I am Group</div>
+const GroupJSX = ({ group }) => {
+  console.log('Attributes are:', group)
+
+  const onClick = (e) => {
+    console.log(`${group.name} clicked`)
+  }
+  return (
+    <button className='Group' onClick={onClick}>
+      {group.name}
+    </button>
+  )
 }
 
-export default Group
+export default GroupJSX

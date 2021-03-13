@@ -3,14 +3,17 @@ import { Template } from 'meteor/templating'
 import { ReactiveDict } from 'meteor/reactive-dict'
 
 import { Tasks } from '../api/tasks.js'
+import { Groups } from '../api/groups.js'
 
 import './task.js'
+import './group.js'
 import './body.html'
 
 // On body element mount, initialize a state
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict()
   Meteor.subscribe('tasks')
+  Meteor.subscribe('groups')
 })
 
 // Setting getters so that they can be accessed inside the HTML
@@ -25,6 +28,10 @@ Template.body.helpers({
   },
   incompleteCount() {
     return Tasks.find({ checked: { $ne: true } }).count()
+  },
+
+  groups() {
+    return Groups.find({})
   }
 })
 
@@ -32,8 +39,6 @@ Template.body.helpers({
 const onNewTaskSubmit = (event) => {
   // Prevent default browser form submit
   event.preventDefault()
-
-  console.log('TARGET', event.target)
 
   // Get value from form element
   const { target } = event
@@ -55,5 +60,9 @@ const onHideCompletedCheckboxToggled = (event, instance) => {
 // Register event listeners
 Template.body.events({
   'submit .new-task': onNewTaskSubmit,
-  'change .hide-completed input': onHideCompletedCheckboxToggled
+  'change .hide-completed input': onHideCompletedCheckboxToggled,
+
+  'click .group-all'() {
+    console.log('ALL CLICKED')
+  }
 })

@@ -18,7 +18,10 @@
       {{/if}}
     </header>
 
-    <div class="groups"></div>
+    <div class="groups">
+      <button class="Group group-all">ALL</button>
+      {{#each groups}} {{> group}} {{/each}}
+    </div>
 
     <ul>
       {{#each tasks}} {{> task}} {{/each}}
