@@ -65,7 +65,7 @@ Template.body.helpers({
     const instance = Template.instance()
 
     return (groupId) => {
-      console.log('groupId passed', groupId)
+      // console.log('groupId passed', groupId)
       instance.state.set('filterByGroup', groupId)
     }
   }
