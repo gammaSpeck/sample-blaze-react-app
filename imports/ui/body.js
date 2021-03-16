@@ -9,6 +9,7 @@ import GroupJSX from './react/components/Group'
 import ToastJSX from './react/components/Toast'
 
 import './task.js'
+import './group_option.js'
 import './body.html'
 import { toast } from 'react-toastify'
 

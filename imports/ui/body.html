@@ -14,7 +14,16 @@
       {{#if currentUser}}
       <form class="new-task">
         <input type="text" name="text" placeholder="Type to add new tasks" />
-        <input type="text" name="groupName" placeholder="Type to add group" />
+        <!-- <input type="text" name="groupName" placeholder="Type to add group" /> -->
+
+        <input type="text" name="groupName" list="groupNames" autocomplete="off" />
+        <datalist id="groupNames">
+          {{#each groups}} {{> group_option }} {{/each}}
+        </datalist>
+
+        <!-- <select name="groupName" id="groupName">
+          {{#each groups}} {{> group_option }} {{/each}}
+        </select> -->
         <button type="submit">Submit</button>
       </form>
       {{/if}}
